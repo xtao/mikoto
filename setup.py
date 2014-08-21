@@ -27,7 +27,7 @@ setup(name='mikoto',
         ],
       entry_points={
             "console_scripts": [
-                  "mikoto = mikoto:main",
+                  "mikoto = mikoto.__main__:main",
             ],
       }
 )
