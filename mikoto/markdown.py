@@ -3,11 +3,16 @@
 import misaka
 from mikoto.htmlrenderer import HtmlRenderer
 
-_generic_renderer = HtmlRenderer(misaka.HTML_HARD_WRAP |
-                                 misaka.HTML_SAFELINK |
-                                 misaka.HTML_SKIP_STYLE |
-                                 misaka.HTML_SKIP_SCRIPT |
-                                 misaka.HTML_ESCAPE)
+_render_flags = misaka.HTML_HARD_WRAP \
+    | misaka.HTML_SAFELINK \
+    | misaka.HTML_SKIP_STYLE \
+    | misaka.HTML_SKIP_SCRIPT \
+    | misaka.HTML_ESCAPE
+
+if hasattr(misaka, 'HTML_SKIP_SCRIPT'):
+    _render_flags |= misaka.HTML_SKIP_SCRIPT
+
+_generic_renderer = HtmlRenderer(_render_flags)
 
 _markdown_renderer = misaka.Markdown(_generic_renderer,
                                      extensions=misaka.EXT_FENCED_CODE |
