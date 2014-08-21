@@ -3,8 +3,14 @@
 import re
 from cgi import escape
 import misaka
+from pygments import highlight
 from pygments.lexers import get_lexer_by_name
+from pygments.formatters import HtmlFormatter
 from mikoto.libs.emoji import parse_emoji
+from mikoto.checklist import render_checklist
+
+RE_USER_MENTION = re.compile(r'(^|\W)@([a-zA-Z0-9_]+)')
+USER_LINK_TEXT = r'\1<a href="/people/\2/" class="user-mention">@\2</a>'
 
 
 class HtmlRenderer(misaka.HtmlRenderer):
@@ -53,26 +59,3 @@ class HtmlRenderer(misaka.HtmlRenderer):
         title = title or ""
         link = self.__link_to_local_project(link)
         return '<a href="%s" title="%s">%s</a>' % (link, title, content)
-
-
-def render_checklist(content):
-    i = 0
-    while 1:
-        m = re.search(RE_CHECKBOX_IN_HTML, content)
-        if not m:
-            break
-        t = m.group(0).replace('<li>', '').replace('</li>', '')
-        source = '<li><label><input type="checkbox" data-item-index="%d"' % i
-        end = lambda type, idx: '> ' + t.lstrip(type).strip() + \
-              '</label></li>' + content[idx + len(t) + len('<li></li>'):]
-
-        if t.startswith(CHECKED):
-            checked_idx = content.find(HTML_CHECKED)
-            content = content[:checked_idx] + source + ' checked' + \
-                      end(CHECKED, checked_idx)
-        else:
-            unchecked_idx = content.find(HTML_UNCHECKED)
-            content = content[:unchecked_idx] + source + \
-                      end(UNCHECKED, unchecked_idx)
-        i += 1
-    return content

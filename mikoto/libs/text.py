@@ -13,7 +13,9 @@ from pygments.lexers import (TextLexer,
 from pygments.util import ClassNotFound
 from pygments import highlight
 
+from mikoto.htmlrenderer import RE_USER_MENTION
 from mikoto.markdown import render_markdown
+from mikoto.checklist import get_checkbox_count
 from mikoto.libs.consts import (SOURCE_FILE, NOT_GENERATED,
                                 IGNORE_FILE_EXTS, IS_GENERATED)
 from mikoto.libs.emoji import parse_emoji
@@ -22,24 +24,16 @@ from mikoto.libs.emoji import parse_emoji
 RST_RE = re.compile(r'.*\.re?st(\.txt)?$')
 RE_TICKET = re.compile(r'(?:^|\s)#(\d+)')
 RE_ISSUE = re.compile(r'(?:^|\s)#issue(\d+)')
-RE_USER_MENTION = re.compile(r'(^|\W)@([a-zA-Z0-9_]+)')
 RE_COMMIT = re.compile(r'(^|\s)([0-9a-f]{7,40})')
 RE_IMAGE_FILENAME = re.compile(
     r'^.+\.(?:jpg|png|gif|jpeg|mobileprovision|svg|ico)$', flags=re.IGNORECASE)
-RE_CHECKBOX_IN_HTML = re.compile('<li>\[[x\s]\].+</li>')
-RE_CHECKBOX_IN_TEXT = re.compile('- (\[[x\s]\]).+')
 
-CHECKED = '[x]'
-UNCHECKED = '[ ]'
-HTML_CHECKED = '<li>[x]'
-HTML_UNCHECKED = '<li>[ ]'
 RE_PR_IN_MESSAGE = re.compile(r'(?:^|\s)#(\d+)(?:\s|$)')
 RE_ISSUE_IN_MESSAGE = re.compile(r'(?:^|\s)#issue(\d+)(?:\s|$)')
 
 TICKET_LINK_TEXT = r'<a href="/%s/pull/\1/" class="issue-link">#\1</a>'
 ISSUE_LINK_TEXT = r'<a href="/%s/issues/\1/" class="issue-link">#\1</a>'
 COMMIT_LINK_TEXT = r' <a href="/%s/commit/\2">\2</a>'
-USER_LINK_TEXT = r'\1<a href="/people/\2/" class="user-mention">@\2</a>'
 
 
 class _CodeHtmlFormatter(HtmlFormatter):
@@ -91,13 +85,6 @@ def highlight_code(path, src, div=False, **kwargs):
                                           encoding='utf-8',
                                           **kwargs))
     return src
-
-
-def get_checkbox_count(content):
-    m = re.findall(RE_CHECKBOX_IN_TEXT, content)
-    if m:
-        checked = filter(lambda x: x == CHECKED, m)
-        return (len(checked), len(m))
 
 
 def is_binary(fname):

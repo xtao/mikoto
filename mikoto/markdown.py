@@ -6,7 +6,6 @@ from mikoto.htmlrenderer import HtmlRenderer
 _render_flags = misaka.HTML_HARD_WRAP \
     | misaka.HTML_SAFELINK \
     | misaka.HTML_SKIP_STYLE \
-    | misaka.HTML_SKIP_SCRIPT \
     | misaka.HTML_ESCAPE
 
 if hasattr(misaka, 'HTML_SKIP_SCRIPT'):
