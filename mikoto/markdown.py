@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import misaka
-from .htmlrenderer import HtmlRenderer
+from mikoto.htmlrenderer import HtmlRenderer
 
 _generic_renderer = HtmlRenderer(misaka.HTML_HARD_WRAP |
                                  misaka.HTML_SAFELINK |

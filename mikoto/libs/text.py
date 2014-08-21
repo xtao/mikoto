@@ -13,10 +13,10 @@ from pygments.lexers import (TextLexer,
 from pygments.util import ClassNotFound
 from pygments import highlight
 
+from mikoto.markdown import render_markdown
 from mikoto.libs.consts import (SOURCE_FILE, NOT_GENERATED,
                                 IGNORE_FILE_EXTS, IS_GENERATED)
 from mikoto.libs.emoji import parse_emoji
-from mikoto.markdown import render_markdown
 
 
 RST_RE = re.compile(r'.*\.re?st(\.txt)?$')

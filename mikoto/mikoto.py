@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .markdown import render_markdown
+from mikoto.markdown import render_markdown
 
 
 class Mikoto(object):
