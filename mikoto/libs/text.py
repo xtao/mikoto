@@ -5,10 +5,9 @@ import re
 
 from mikoto.htmlrenderer import RE_USER_MENTION
 from mikoto.markdown import render_markdown
-from mikoto.checklist import get_checkbox_count
+from mikoto.emoji import render_emoji
 from mikoto.libs.consts import (SOURCE_FILE, NOT_GENERATED,
                                 IGNORE_FILE_EXTS, IS_GENERATED)
-from mikoto.libs.emoji import parse_emoji
 
 
 RST_RE = re.compile(r'.*\.re?st(\.txt)?$')
@@ -61,11 +60,11 @@ def render_markdown_with_team(content, team):
     text = render_markdown(content)
     text = re.sub(RE_TICKET, r'<a href="' + team.url +
                   r'issues/\1/" class="issue-link">#\1</a>', text)
-    return parse_emoji(text, is_escape=False)
+    return render_emoji(text)
 
 
 def render_commit_message(message, project):
-    text = parse_emoji(message)
+    text = render_emoji(message)
     text = re.sub(RE_PR_IN_MESSAGE,
                   r' <a href="/%s/newpull/\1">#\1</a> ' % project.name,
                   text)

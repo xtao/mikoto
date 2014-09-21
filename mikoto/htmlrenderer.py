@@ -6,7 +6,7 @@ import misaka
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
-from mikoto.libs.emoji import parse_emoji
+from mikoto.emoji import render_emoji
 from mikoto.checklist import render_checklist
 
 RE_USER_MENTION = re.compile(r'(^|\W)@([a-zA-Z0-9_]+)')
@@ -15,11 +15,15 @@ USER_LINK_TEXT = r'\1<a href="/people/\2/" class="user-mention">@\2</a>'
 
 class HtmlRenderer(misaka.HtmlRenderer):
 
+    #def __init__(self, *k, **kw):
+    #    self.emoji = kw.pop('emoji', None)
+    #    super(HtmlRenderer, self).__init__(*k, **kw)
+
     def postprocess(self, text):
         if not text:
             return text
         text = render_checklist(text)
-        text = parse_emoji(text, is_escape=False)
+        text = render_emoji(text)
         return RE_USER_MENTION.sub(USER_LINK_TEXT, text)
 
     def block_code(self, text, lang):

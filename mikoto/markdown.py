@@ -21,7 +21,20 @@ _markdown_renderer = misaka.Markdown(_generic_renderer,
                                      misaka.EXT_STRIKETHROUGH)
 
 
-def render_markdown(content):
-    if not content:
-        content = ''
-    return _markdown_renderer.render(content)
+def render_markdown(text):
+    if not text:
+        text = ''
+    renderer = _markdown_renderer
+    return renderer.render(text)
+
+
+def generate_renderer(emoji):
+    # TODO
+    generic_renderer = HtmlRenderer(_render_flags, emoji=emoji)
+    markdown_renderer = misaka.Markdown(generic_renderer,
+                                        extensions=misaka.EXT_FENCED_CODE |
+                                        misaka.EXT_NO_INTRA_EMPHASIS |
+                                        misaka.EXT_AUTOLINK |
+                                        misaka.EXT_TABLES |
+                                        misaka.EXT_STRIKETHROUGH)
+    return markdown_renderer

@@ -9,7 +9,7 @@ __all__ = ['Mikoto']
 
 class Mikoto(object):
 
-    def __init__(self, text):
+    def __init__(self, text, emoji=None):
         self.text = text
         self.unicode = translate_to_unicode(text)
 
