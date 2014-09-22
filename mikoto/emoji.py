@@ -72,7 +72,7 @@ emoji.init()
 def render_emoji(text):
     if not text:
         return ''
-    text = render_grouped_emoji(emoji, text)
+    text = render_grouped_emoji(text)
     if emoji.emoji_only_pattern.match(text.strip()):
         emoji_img = '<img src="/static/emoji/%s.png" align="absmiddle"/>'
     else:
