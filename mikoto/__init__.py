@@ -1,29 +1,35 @@
 # -*- coding: utf-8 -*-
 
-from mikoto.markdown import render_markdown
+from mikoto.markdown import render_markdown, init_markdown
 from mikoto.rst import render_rst
 from mikoto.code import render_code, render_highlight_code
 from mikoto.text import translate_to_unicode
 
 __all__ = ['Mikoto']
 
+
 class Mikoto(object):
 
-    def __init__(self, text, emoji=None):
-        self.text = text
-        self.unicode = translate_to_unicode(text)
+    def __init__(self):
+        self.markdown = None
 
-    @property
-    def markdown(self):
-        return render_markdown(self.unicode)
+    def init_markdown(self, **kw):
+        self.markdown = init_markdown(**kw)
 
-    @property
-    def restructuredtext(self):
-        return render_rst(self.unicode)
+    def render_markdown(self, text, path):
+        text = translate_to_unicode(text)
+        if self.markdown:
+            return render_markdown(text)
+        return self.markdown.render(text)
 
-    @property
-    def code(self):
-        return render_code(self.unicode)
+    def render_restructuredtext(self, text, path):
+        text = translate_to_unicode(text)
+        return render_rst(text)
 
-    def highlight_code(self, path):
-        return render_highlight_code(self.unicode, path)
+    def render_code(self, text, path):
+        text = translate_to_unicode(text)
+        return render_code(text)
+
+    def render_highlight_code(self, text, path):
+        text = translate_to_unicode(text)
+        return render_highlight_code(text, path)

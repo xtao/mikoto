@@ -69,7 +69,7 @@ emoji = Emoji(emojis=EMOJIS, grouped_emojis=GROUPED_EMOJIS)
 emoji.init()
 
 
-def render_emoji(text):
+def render_emoji(emoji, text):
     if not text:
         return ''
     text = render_grouped_emoji(emoji, text)
@@ -81,7 +81,7 @@ def render_emoji(text):
     return text
 
 
-def render_grouped_emoji(text):
+def render_grouped_emoji(emoji, text):
     groups = set(emoji.grouped_emoji_pattern.findall(text))
     for group in groups:
         group_text = emoji.grouped_emojis[group]

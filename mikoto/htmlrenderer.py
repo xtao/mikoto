@@ -15,15 +15,17 @@ USER_LINK_TEXT = r'\1<a href="/people/\2/" class="user-mention">@\2</a>'
 
 class HtmlRenderer(misaka.HtmlRenderer):
 
-    #def __init__(self, *k, **kw):
-    #    self.emoji = kw.pop('emoji', None)
-    #    super(HtmlRenderer, self).__init__(*k, **kw)
+    def __init__(self, *k, **kw):
+        self.emoji = kw.pop('emoji', None)
+        self.link_prefix = kw.pop('link_prefix', None)
+        super(HtmlRenderer, self).__init__(*k, **kw)
 
     def postprocess(self, text):
         if not text:
             return text
         text = render_checklist(text)
-        text = render_emoji(text)
+        if self.emoji:
+            text = render_emoji(self.emoji, text)
         return RE_USER_MENTION.sub(USER_LINK_TEXT, text)
 
     def block_code(self, text, lang):
@@ -48,18 +50,20 @@ class HtmlRenderer(misaka.HtmlRenderer):
         text = text.replace("@", "&#64;")
         return text
 
-    def __link_to_local_project(self, link):
+    def __link_to_local(self, link):
         if not (link.startswith("http://")
                 or link.startswith("https://")):
-            link = "[PROJECT]%s" % link
+            link = "[MIKOTO_PREFIX]%s" % link
         return link
 
     def image(self, link, title, alt_text):
         alt_text = alt_text or ""
-        link = self.__link_to_local_project(link)
+        if self.link_prefix:
+            link = self.__link_to_local(link)
         return '<img src="%s" alt="%s">' % (link, alt_text)
 
     def link(self, link, title, content):
         title = title or ""
-        link = self.__link_to_local_project(link)
+        if self.link_prefix:
+            link = self.__link_to_local(link)
         return '<a href="%s" title="%s">%s</a>' % (link, title, content)

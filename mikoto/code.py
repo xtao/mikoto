@@ -59,11 +59,12 @@ def render_highlight_code(text, path, **kwargs):
 
     formatter = CodeHtmlFormatter
 
-    return highlight(text, lexer, formatter(linenos='inline',
-                                            lineanchors='L',
-                                            anchorlinenos=True,
-                                            encoding='utf-8',
-                                            **kwargs))
+    output = highlight(text, lexer, formatter(linenos='inline',
+                                              lineanchors='L',
+                                              anchorlinenos=True,
+                                              encoding='utf-8',
+                                              **kwargs))
+    return output.decode('utf-8')
 
 
 class CodeHtmlFormatter(HtmlFormatter):

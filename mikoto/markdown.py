@@ -27,14 +27,12 @@ def render_markdown(text):
     renderer = _markdown_renderer
     return renderer.render(text)
 
-
-def generate_renderer(emoji):
-    # TODO
-    generic_renderer = HtmlRenderer(_render_flags, emoji=emoji)
-    markdown_renderer = misaka.Markdown(generic_renderer,
-                                        extensions=misaka.EXT_FENCED_CODE |
-                                        misaka.EXT_NO_INTRA_EMPHASIS |
-                                        misaka.EXT_AUTOLINK |
-                                        misaka.EXT_TABLES |
-                                        misaka.EXT_STRIKETHROUGH)
-    return markdown_renderer
+def init_markdown(emoji=None, link_prefix=None):
+    html = HtmlRenderer(_render_flags, emoji=emoji, link_prefix=link_prefix)
+    markdown = misaka.Markdown(html,
+                               extensions=misaka.EXT_FENCED_CODE |
+                               misaka.EXT_NO_INTRA_EMPHASIS |
+                               misaka.EXT_AUTOLINK |
+                               misaka.EXT_TABLES |
+                               misaka.EXT_STRIKETHROUGH)
+    return markdown
