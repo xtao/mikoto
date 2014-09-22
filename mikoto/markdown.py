@@ -28,8 +28,7 @@ def render_markdown(text):
     return renderer.render(text)
 
 
-def generate_renderer(emoji):
-    # TODO
+def generate_markdown_renderer(emoji):
     generic_renderer = HtmlRenderer(_render_flags, emoji=emoji)
     markdown_renderer = misaka.Markdown(generic_renderer,
                                         extensions=misaka.EXT_FENCED_CODE |

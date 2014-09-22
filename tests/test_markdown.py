@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from unittest import TestCase
 from mikoto.libs.text import render
+#from mikoto.markdown import render_markdown as render
 
 
 class TestMarkdown(TestCase):
+
     def test_tasklist(self):
         md = '''
 - [x] this is a complete item

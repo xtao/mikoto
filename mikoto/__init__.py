@@ -7,15 +7,20 @@ from mikoto.text import translate_to_unicode
 
 __all__ = ['Mikoto']
 
+
 class Mikoto(object):
 
-    def __init__(self, text, emoji=None):
+    def __init__(self, text, config=None):
         self.text = text
+        self.config = config
         self.unicode = translate_to_unicode(text)
 
     @property
     def markdown(self):
-        return render_markdown(self.unicode)
+        render = render_markdown
+        if self.config:
+            render =  self.config.markdown_renderer.render
+        return render(self.unicode)
 
     @property
     def restructuredtext(self):
